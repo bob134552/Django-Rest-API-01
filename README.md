@@ -1,1 +1,1 @@
-# Django-Rest-API-01
+# Django-Rest-API-recipe-app

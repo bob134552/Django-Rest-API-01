@@ -1,5 +1,5 @@
 FROM python:3.9-alpine3.13
-LABEL maintainer="londonappdeveloper.com"
+LABEL maintainer="github.com/bob134552"
 
 ENV PYTHONUNBUFFERED 1
 

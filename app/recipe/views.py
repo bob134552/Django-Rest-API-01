@@ -1,7 +1,7 @@
 """
 Views for the recipe APIs
 """
-from core.models import Recipe, Tag
+from core.models import Recipe, Tag, Ingredient
 from recipe import serializers
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import TokenAuthentication
@@ -31,18 +31,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class TagViewSet(
+class BaseRecipeAttrViewSet(
         mixins.UpdateModelMixin,
         mixins.DestroyModelMixin,
         mixins.ListModelMixin,
         viewsets.GenericViewSet
     ):
-    """Manage tags in the database"""
-    serializer_class = serializers.TagSerializer
-    queryset = Tag.objects.all()
+    """Base viewset for recipe attributes"""
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """filter queryset to authenticated user"""
         return self.queryset.filter(user=self.request.user).order_by('-name')
+
+
+class TagViewSet(
+        BaseRecipeAttrViewSet
+    ):
+    """Manage tags in the database"""
+    serializer_class = serializers.TagSerializer
+    queryset = Tag.objects.all()
+
+
+class IngredientViewSet(
+        BaseRecipeAttrViewSet
+    ):
+    """Manage ingredients in the database"""
+    serializer_class = serializers.IngredientSerializer
+    queryset = Ingredient.objects.all()
